@@ -1,0 +1,375 @@
+{
+  "testCase": "TC07",
+  "testRunId": "tc07-retry-policy-20260607_2215",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "workflowName": "wf_perf_tc07_retry_policy_20260607_2215",
+  "taskType": "perf_task_tc07_retry_policy_20260607_2215",
+  "workflowVersion": 1,
+  "workflowStartRps": 1,
+  "crashWorkerPollRps": 5,
+  "recoveryWorkerPollRps": 5,
+  "crashRatio": 1,
+  "responseTimeoutSeconds": 3,
+  "retryCount": 1,
+  "retryDelaySeconds": 1,
+  "timeoutSeconds": 20,
+  "taskTimeoutPolicy": "RETRY",
+  "testDuration": "10s",
+  "recoveryGraceDuration": "60s",
+  "recoveryWorkerDuration": "70s",
+  "recoveryWorkerStartTime": "5s",
+  "strictLatencyThreshold": false,
+  "recoveryLatencyNote": "estimated_recovery_latency is measured from workflow createdAtMs to recovery completion; it is not exact crash-to-repoll latency.",
+  "definitionActions": {
+    "task": "created",
+    "workflow": "created"
+  },
+  "overall": {
+    "workflow_start_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 21.371,
+        "max": 46.997,
+        "p(90)": 43.235,
+        "p(95)": 45.116,
+        "avg": 24.222727272727276,
+        "min": 12.915
+      }
+    },
+    "crash_worker_poll_attempt_latency": {
+      "values": {
+        "max": 117.894,
+        "p(90)": 110.208,
+        "p(95)": 111.2165,
+        "avg": 95.69584313725488,
+        "min": 15.293,
+        "med": 107.026
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "recovery_worker_poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 212.1,
+        "p(90)": 111.588,
+        "p(95)": 114.0865,
+        "avg": 105.87214245014248,
+        "min": 6.009,
+        "med": 107.406
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 16.9295,
+        "min": 6.009,
+        "med": 17.335500000000003,
+        "max": 23.571,
+        "p(90)": 22.0802,
+        "p(95)": 23.282
+      }
+    },
+    "poll_miss_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 107.4385,
+        "max": 212.1,
+        "p(90)": 111.5325,
+        "p(95)": 113.96834999999999,
+        "avg": 108.68978906250003,
+        "min": 102.493
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 17.843,
+        "p(95)": 23.343499999999995,
+        "avg": 13.985363636363637,
+        "min": 6.62,
+        "med": 13.395,
+        "max": 28.844
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 1471,
+        "p(90)": 1315.4,
+        "p(95)": 1414.8999999999999,
+        "avg": 646.5555555555555,
+        "min": 190,
+        "med": 211.5
+      }
+    },
+    "workflow_submit_to_poll_latency": {
+      "values": {
+        "med": 225.5,
+        "max": 35414,
+        "p(90)": 34801.1,
+        "p(95)": 35248.25,
+        "avg": 13562.888888888889,
+        "min": 208
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "workflow_submit_to_task_complete_latency": {
+      "contains": "time",
+      "values": {
+        "p(90)": 35232,
+        "p(95)": 35330,
+        "avg": 21995,
+        "min": 215,
+        "med": 33833,
+        "max": 35428
+      },
+      "type": "trend"
+    },
+    "workflow_submit_to_recovery_complete_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 35369.2,
+        "avg": 34433.142857142855,
+        "min": 33430,
+        "med": 34433,
+        "max": 35428,
+        "p(90)": 35310.4
+      }
+    },
+    "estimated_recovery_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 34433.142857142855,
+        "min": 33430,
+        "med": 34433,
+        "max": 35428,
+        "p(90)": 35310.4,
+        "p(95)": 35369.2
+      }
+    },
+    "workflows_started": {
+      "contains": "default",
+      "values": {
+        "count": 11,
+        "rate": 0.1462259747234046
+      },
+      "type": "counter"
+    },
+    "crash_worker_tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 7,
+        "rate": 0.09305289300580293
+      }
+    },
+    "crash_worker_tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "crashed_tasks": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0.09305289300580293,
+        "count": 7
+      }
+    },
+    "recovery_worker_tasks_polled": {
+      "contains": "default",
+      "values": {
+        "count": 11,
+        "rate": 0.1462259747234046
+      },
+      "type": "counter"
+    },
+    "recovery_worker_tasks_completed": {
+      "values": {
+        "count": 11,
+        "rate": 0.1462259747234046
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "recovered_tasks": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 7,
+        "rate": 0.09305289300580293
+      }
+    },
+    "crash_worker_poll_misses": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 44,
+        "rate": 0.5849038988936184
+      }
+    },
+    "recovery_worker_poll_misses": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 340,
+        "rate": 4.519711945996142
+      }
+    },
+    "workflow_start_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "poll_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      }
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "missing_task_scheduled_time": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "missing_input_created_at_ms": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "unexpected_task_type": {
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter"
+    },
+    "workflow_start_success_rate": {
+      "values": {
+        "rate": 1,
+        "passes": 11,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.999": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "task_complete_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 11,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "crash_injection_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 7,
+        "fails": 0
+      }
+    },
+    "recovery_success_observed_rate": {
+      "contains": "default",
+      "values": {
+        "rate": 0.5,
+        "passes": 7,
+        "fails": 7
+      },
+      "type": "rate"
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.04477611940298507,
+        "passes": 18,
+        "fails": 384
+      }
+    },
+    "poll_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 402,
+        "fails": 0
+      }
+    }
+  },
+  "derived": {
+    "observedCrashRatio": 1,
+    "recoveredToCrashedRatio": 1,
+    "totalCompletedTasks": 11,
+    "totalCompletedToStartedRatio": 1,
+    "actualCompletedRps": 1.1,
+    "expectedMinRecoveryLatencyMs": 3000,
+    "isStable": true,
+    "cliffSignals": {
+      "recoveryRatioBelowThreshold": false,
+      "completionRatioBelowThreshold": false,
+      "hasErrors": false,
+      "hasPollErrors": false,
+      "hasCompleteErrors": false
+    }
+  }
+}

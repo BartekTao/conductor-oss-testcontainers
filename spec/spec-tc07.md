@@ -33,7 +33,7 @@ task definition：
     timeoutSeconds = 60
     responseTimeoutSeconds = 15
     pollTimeoutSeconds = 60
-    timeoutPolicy = TIME_OUT_WF
+    timeoutPolicy = RETRY
 
 測試流程：
 
@@ -95,6 +95,7 @@ AI agent 需要建立：
     RETRY_DELAY_SECONDS=5
     RESPONSE_TIMEOUT_SECONDS=15
     TIMEOUT_SECONDS=60
+    TASK_TIMEOUT_POLICY=RETRY
 
     TEST_DURATION="5m"
     RECOVERY_GRACE_DURATION="2m"
@@ -127,7 +128,7 @@ Task definition 由 ENV 動態產生。
       "timeoutSeconds": TIMEOUT_SECONDS,
       "responseTimeoutSeconds": RESPONSE_TIMEOUT_SECONDS,
       "pollTimeoutSeconds": 60,
-      "timeoutPolicy": "TIME_OUT_WF",
+      "timeoutPolicy": "RETRY",
       "ownerEmail": "perf-test@example.com",
       "inputKeys": [],
       "outputKeys": [],
@@ -137,6 +138,8 @@ Task definition 由 ENV 動態產生。
 注意：
 
     TC07 可能會調整 responseTimeoutSeconds。
+    正式 recovery 測試預設使用 TASK_TIMEOUT_POLICY=RETRY，讓 worker crash 後的 task 有機會重新進入 queue。
+    TIME_OUT_WF 僅用於對照測試 workflow timeout/fail 行為。
     如果 task definition 已存在但 timeout 設定不同，建議允許 update 或用 FAIL_ON_DEFINITION_MISMATCH=false。
 
 ---
@@ -182,7 +185,7 @@ Task definition 由 ENV 動態產生。
 
 setup() 需要：
 
-    1. build task definition with RETRY_COUNT, RETRY_DELAY_SECONDS, RESPONSE_TIMEOUT_SECONDS, TIMEOUT_SECONDS
+    1. build task definition with RETRY_COUNT, RETRY_DELAY_SECONDS, RESPONSE_TIMEOUT_SECONDS, TIMEOUT_SECONDS, TASK_TIMEOUT_POLICY
     2. ensureTaskDefinition(TASK_TYPE)
     3. build workflow definition
     4. ensureWorkflowDefinition(WORKFLOW_NAME)
@@ -193,6 +196,7 @@ Validation：
     task.retryCount 符合 RETRY_COUNT
     task.responseTimeoutSeconds 符合 RESPONSE_TIMEOUT_SECONDS
     task.timeoutSeconds 符合 TIMEOUT_SECONDS
+    task.timeoutPolicy 符合 TASK_TIMEOUT_POLICY
     workflow.tasks.length == 1
     workflow task name == TASK_TYPE
     workflow task type == SIMPLE
@@ -481,6 +485,7 @@ Recovery worker poll RPS：
       -e RETRY_COUNT=1 \
       -e RETRY_DELAY_SECONDS=5 \
       -e TIMEOUT_SECONDS=60 \
+      -e TASK_TIMEOUT_POLICY=RETRY \
       -e TEST_DURATION="5m" \
       -e RECOVERY_GRACE_DURATION="2m" \
       -e AUTO_CREATE_DEFINITIONS=true \
@@ -574,7 +579,478 @@ summary 至少包含：
 
 ---
 
-## 18. 最終產出
+## 18. Implementation Plan
+
+### Phase 1: k6 腳本骨架
+
+建立 `k6/scenarios/tc07_worker_crash_recovery.js`，並重用既有 `k6/lib` helper：
+
+```text
+1. ENV parser
+2. Conductor HTTP client
+3. definition service
+4. task parser / task complete helper
+5. summary helper
+6. producer scenario
+7. crash worker scenario
+8. recovery worker scenario
+9. custom metrics
+10. handleSummary()
+```
+
+此階段先完成必要 ENV 檢查：
+
+```text
+BASE_URL 必填
+0 <= CRASH_RATIO <= 1
+RETRY_COUNT >= 0
+RETRY_DELAY_SECONDS >= 0
+RESPONSE_TIMEOUT_SECONDS > 0
+TIMEOUT_SECONDS > RESPONSE_TIMEOUT_SECONDS
+TASK_TIMEOUT_POLICY in RETRY, TIME_OUT_WF, ALERT_ONLY
+WORKFLOW_START_RPS >= 1
+CRASH_WORKER_POLL_RPS >= 1
+RECOVERY_WORKER_POLL_RPS >= 1
+```
+
+TC07 與 TC06 的差異需要在腳本註解或 summary 中清楚保留：
+
+```text
+TC06: worker 主動回報 FAILED，測 retry storm。
+TC07: worker poll 後完全不回報，測 response timeout recovery。
+```
+
+### Phase 2: Response-timeout Definition Setup
+
+setup 階段建立或驗證 task/workflow definitions。
+
+task definition 由 ENV 動態產生：
+
+```text
+retryCount = RETRY_COUNT
+retryDelaySeconds = RETRY_DELAY_SECONDS
+responseTimeoutSeconds = RESPONSE_TIMEOUT_SECONDS
+timeoutSeconds = TIMEOUT_SECONDS
+timeoutPolicy = TASK_TIMEOUT_POLICY
+```
+
+workflow definition 維持單一 SIMPLE task，並驗證：
+
+```text
+workflow name
+workflow version
+workflow.tasks.length == 1
+workflow task name == TASK_TYPE
+workflow task type == SIMPLE
+required inputParameters:
+  - testRunId
+  - iterationId
+  - createdAtMs
+  - crashRatio
+  - payload
+```
+
+definition mismatch 行為：
+
+```text
+FAIL_ON_DEFINITION_MISMATCH=true:
+  fail setup
+
+FAIL_ON_DEFINITION_MISMATCH=false:
+  console.warn 並繼續
+```
+
+第一版不做自動 task definition update。調整 response timeout 或 timeout 參數時，建議使用不同 task/workflow name，或用 `FAIL_ON_DEFINITION_MISMATCH=false` 做探索性測試。
+
+### Phase 3: Producer Scenario
+
+Producer 使用 `constant-arrival-rate`：
+
+```text
+rate = WORKFLOW_START_RPS
+duration = TEST_DURATION
+exec = producer
+```
+
+每次 iteration：
+
+```text
+1. 建立 iterationId
+2. 記錄 createdAtMs
+3. POST /workflow/{WORKFLOW_NAME}
+4. input 帶入 testRunId、iterationId、createdAtMs、crashRatio、payload
+5. 成功時計入 workflows_started
+6. 失敗時計入 workflow_start_errors 與 errors
+```
+
+必要 metrics：
+
+```text
+workflow_start_latency
+workflows_started
+workflow_start_success_rate
+workflow_start_errors
+```
+
+### Phase 4: Crash Worker Scenario
+
+Crash worker 使用 `constant-arrival-rate`：
+
+```text
+rate = CRASH_WORKER_POLL_RPS
+duration = TEST_DURATION
+exec = crashWorker
+```
+
+每次 iteration：
+
+```text
+1. poll TASK_TYPE
+2. poll miss:
+   - crash_worker_poll_misses += 1
+   - 不算 error
+3. poll error:
+   - poll_errors += 1
+   - errors += 1
+4. poll hit:
+   - crash_worker_tasks_polled += 1
+   - 記錄 task_scheduled_to_poll_latency
+   - 記錄 workflow_submit_to_poll_latency
+   - shouldCrash = Math.random() < CRASH_RATIO
+5. shouldCrash=true:
+   - 不呼叫 /tasks update
+   - 不 complete
+   - 不 fail
+   - crashed_tasks += 1
+6. shouldCrash=false:
+   - POST /tasks status=COMPLETED
+   - crash_worker_tasks_completed += 1
+```
+
+crash 行為必須是「poll 後完全不回報」。不可用 `FAILED` 模擬 crash，否則會變成 TC06 retry storm。
+
+### Phase 5: Recovery Worker Scenario
+
+Recovery worker 使用 `constant-arrival-rate`：
+
+```text
+rate = RECOVERY_WORKER_POLL_RPS
+duration = TEST_DURATION + RECOVERY_GRACE_DURATION
+exec = recoveryWorker
+```
+
+每次 iteration：
+
+```text
+1. poll TASK_TYPE
+2. poll miss:
+   - recovery_worker_poll_misses += 1
+   - 不算 error
+3. poll error:
+   - poll_errors += 1
+   - errors += 1
+4. poll hit:
+   - recovery_worker_tasks_polled += 1
+   - 判斷 task age
+   - POST /tasks status=COMPLETED
+   - recovery_worker_tasks_completed += 1
+5. 如果 Date.now() - createdAtMs >= RESPONSE_TIMEOUT_SECONDS * 1000:
+   - 視為 recovered task
+   - recovered_tasks += 1
+   - 記錄 workflow_submit_to_recovery_complete_latency
+   - 記錄 estimated_recovery_latency
+```
+
+第一版不使用跨 VU taskId map，所以 recovery latency 是近似值：
+
+```text
+estimated_recovery_latency =
+  recovery complete time - workflow input createdAtMs
+```
+
+這不能宣稱是精準的 crash-to-repoll latency。若後續需要精準值，需要外部 sink 或資料庫記錄 crash worker poll hit 時間。
+
+### Phase 6: Metrics / Thresholds / Summary
+
+建立第 10 節定義的 Trend、Counter、Rate metrics。
+
+`handleSummary()` 需要輸出：
+
+```text
+tc07_summary.json
+tc07_raw_summary.json
+```
+
+`tc07_summary.json` 需要包含：
+
+```text
+test config
+overall metrics
+derived ratios
+stable/cliff 判斷
+```
+
+derived metrics 至少包含：
+
+```text
+observedCrashRatio = crashed_tasks / crash_worker_tasks_polled
+recoveredToCrashedRatio = recovered_tasks / crashed_tasks
+totalCompletedTasks =
+  crash_worker_tasks_completed + recovery_worker_tasks_completed
+totalCompletedToStartedRatio = totalCompletedTasks / workflows_started
+actualCompletedRps = totalCompletedTasks / TEST_DURATION_SECONDS
+isStable
+```
+
+`isStable` 至少需檢查：
+
+```text
+errors == 0
+workflow_start_success_rate >= 0.999
+task_complete_success_rate >= 0.99
+totalCompletedToStartedRatio >= 0.95
+recoveredToCrashedRatio >= 0.90 when crashed_tasks > 0
+dropped_iterations == 0
+latency p95 未超過 SLA threshold
+```
+
+### Phase 7: Smoke / Recovery / Capacity Runs
+
+先做低流量 smoke，再逐步擴大。
+
+```text
+Smoke:
+  WORKFLOW_START_RPS=1
+  CRASH_WORKER_POLL_RPS=4
+  RECOVERY_WORKER_POLL_RPS=4
+  CRASH_RATIO=0.50
+  RESPONSE_TIMEOUT_SECONDS=5
+  TIMEOUT_SECONDS=30
+  TEST_DURATION=30s
+  RECOVERY_GRACE_DURATION=20s
+
+Recovery validation:
+  CRASH_RATIO=0
+  CRASH_RATIO=0.50
+  RESPONSE_TIMEOUT_SECONDS=5/15/30
+
+Capacity:
+  固定 CRASH_RATIO=0.50
+  逐步提高 WORKFLOW_START_RPS
+
+Cliff confirmation:
+  在第一個 unstable RPS 或 response timeout 設定附近重跑
+```
+
+---
+
+## 19. TODO Checklist
+
+- [ ] 建立 `k6/scenarios/tc07_worker_crash_recovery.js`。
+- [ ] 實作 ENV parser，支援本 spec 第 4 節列出的所有 ENV。
+- [ ] 實作 `BASE_URL` 必填檢查與清楚的 fail message。
+- [ ] 實作 `CRASH_RATIO` validation：`0 <= CRASH_RATIO <= 1`。
+- [ ] 實作 retry / timeout ENV validation。
+- [ ] 實作 RPS ENV validation。
+- [ ] 實作 task definition payload builder。
+- [ ] 實作 workflow definition payload builder。
+- [ ] 實作 task definition 查詢、建立與 mismatch validation。
+- [ ] 實作 workflow definition 查詢、建立與 mismatch validation。
+- [ ] 實作 `AUTO_CREATE_DEFINITIONS` 行為。
+- [ ] 實作 `FAIL_ON_DEFINITION_MISMATCH` 行為。
+- [ ] 實作 producer scenario options。
+- [ ] 實作 producer workflow start payload。
+- [ ] 實作 crash worker scenario options。
+- [ ] 實作 recovery worker scenario options。
+- [ ] 實作 recovery worker duration = `TEST_DURATION + RECOVERY_GRACE_DURATION`。
+- [ ] 實作 crash worker poll hit / miss / error parser。
+- [ ] 實作 recovery worker poll hit / miss / error parser。
+- [ ] 實作 crash injection decision：`Math.random() < CRASH_RATIO`。
+- [ ] 實作 crash 行為：不 complete、不 fail、不呼叫 task update。
+- [ ] 實作 crash worker non-crash complete request。
+- [ ] 實作 recovery worker complete request。
+- [ ] 實作 recovered task 近似判斷。
+- [ ] 實作 workflow start metrics。
+- [ ] 實作 crash worker poll metrics。
+- [ ] 實作 recovery worker poll metrics。
+- [ ] 實作 task scheduled-to-poll latency。
+- [ ] 實作 workflow submit-to-poll latency。
+- [ ] 實作 workflow submit-to-task-complete latency。
+- [ ] 實作 workflow submit-to-recovery-complete latency。
+- [ ] 實作 estimated recovery latency。
+- [ ] 實作所有 Counter metrics。
+- [ ] 實作所有 Rate metrics。
+- [ ] 實作 strict / non-strict thresholds。
+- [ ] 實作 `handleSummary()` 輸出 `tc07_summary.json`。
+- [ ] 實作 `handleSummary()` 輸出 `tc07_raw_summary.json`。
+- [ ] 實作 derived ratios：`observedCrashRatio`、`recoveredToCrashedRatio`、`totalCompletedToStartedRatio`。
+- [ ] 實作 `isStable` 與 cliff 判定欄位。
+- [ ] 建立低 RPS smoke validation command 範例。
+- [ ] 建立 response timeout matrix command 範例。
+- [ ] 建立 capacity/SLA run command 範例。
+- [ ] 驗證 `CRASH_RATIO=0` 時不產生 crashed/recovered tasks。
+- [ ] 驗證 `CRASH_RATIO>0` 時 recovery worker 可取得 timeout 後 task。
+
+---
+
+## 20. Validation Criteria
+
+### 20.1 Spec-level validation
+
+文件本身需要符合：
+
+```text
+1. TC07 清楚描述 worker crash / response timeout recovery。
+2. TC07 與 TC06 retry storm 的差異清楚。
+3. 正式 runtime 包含 producer、crash worker、recovery worker 三個 scenario。
+4. crash worker 的 crash 行為是不回報任何 task update。
+5. recovery worker duration 明確包含 RECOVERY_GRACE_DURATION。
+6. ENV、metrics、summary、成功標準與 cliff 判定彼此命名一致。
+7. Summary schema 包含 crash、recovery、latency、derived ratios。
+8. 文件明確說明第一版 recovery latency 是近似值。
+```
+
+### 20.2 Script-level validation
+
+k6 腳本完成後，需要通過：
+
+```text
+1. 腳本可以被 k6 載入。
+2. BASE_URL 缺失時會 fail，且錯誤訊息清楚。
+3. CRASH_RATIO 必須介於 0 到 1。
+4. RETRY_COUNT >= 0。
+5. RETRY_DELAY_SECONDS >= 0。
+6. RESPONSE_TIMEOUT_SECONDS > 0。
+7. TIMEOUT_SECONDS > RESPONSE_TIMEOUT_SECONDS。
+8. WORKFLOW_START_RPS >= 1。
+9. CRASH_WORKER_POLL_RPS >= 1。
+10. RECOVERY_WORKER_POLL_RPS >= 1。
+11. options.scenarios 包含 producer、crashWorker、recoveryWorker。
+12. recoveryWorker duration = TEST_DURATION + RECOVERY_GRACE_DURATION。
+13. STRICT_LATENCY_THRESHOLD=true 時啟用 latency thresholds。
+14. STRICT_LATENCY_THRESHOLD=false 時只保留基礎成功率與 error thresholds。
+```
+
+### 20.3 Runtime smoke validation
+
+使用低 RPS 與短 timeout 進行 smoke run：
+
+```bash
+k6 run \
+  -e BASE_URL="https://your-conductor-domain" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_START_RPS=1 \
+  -e CRASH_WORKER_POLL_RPS=4 \
+  -e RECOVERY_WORKER_POLL_RPS=4 \
+  -e CRASH_RATIO=0.50 \
+  -e RESPONSE_TIMEOUT_SECONDS=5 \
+  -e TIMEOUT_SECONDS=30 \
+  -e TEST_DURATION="30s" \
+  -e RECOVERY_GRACE_DURATION="20s" \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  k6/scenarios/tc07_worker_crash_recovery.js
+```
+
+Smoke run 需要符合：
+
+```text
+1. definitions 可建立或驗證。
+2. workflows_started > 0。
+3. crash_worker_tasks_polled > 0。
+4. crashed_tasks > 0。
+5. recovery_worker_tasks_polled > 0。
+6. recovered_tasks > 0。
+7. workflow_start_errors = 0。
+8. poll_errors = 0。
+9. complete_errors = 0。
+10. tc07_summary.json 產生成功。
+11. tc07_raw_summary.json 產生成功。
+```
+
+### 20.4 Recovery behavior validation
+
+`CRASH_RATIO=0` 時：
+
+```text
+crashed_tasks = 0
+recovered_tasks = 0
+total_completed_to_started_ratio 接近 1
+errors = 0
+```
+
+`CRASH_RATIO=0.50` 時：
+
+```text
+observedCrashRatio 接近 0.50
+recovered_tasks > 0
+recoveredToCrashedRatio 在 grace window 內達到門檻
+estimated_recovery_latency p95 >= RESPONSE_TIMEOUT_SECONDS * 1000
+errors = 0
+```
+
+拉長 `RESPONSE_TIMEOUT_SECONDS` 時：
+
+```text
+estimated_recovery_latency p95 應跟著上升
+recovered task 出現時間不應早於合理 timeout window
+```
+
+### 20.5 Capacity-run validation
+
+stable round 必須滿足：
+
+```text
+errors = 0
+workflow_start_success_rate >= 0.999
+task_complete_success_rate >= 0.99
+dropped_iterations = 0
+total_completed_to_started_ratio >= 0.95
+recovered_to_crashed_ratio >= 0.90
+estimated_recovery_latency p95 <= SLA_RECOVERY_LATENCY_P95_MS
+workflow_start_latency p95 < SLA_API_P95_MS
+task_update_latency p95 < SLA_API_P95_MS
+```
+
+以下任一條件成立即視為 cliff：
+
+```text
+recovered_to_crashed_ratio < 0.90
+total_completed_to_started_ratio < 0.95
+dropped_iterations > 0
+errors > 0
+estimated_recovery_latency p95 超過 SLA
+recovery worker 長時間 poll miss 且 crashed task 未恢復
+task 疑似永久卡在 IN_PROGRESS
+```
+
+### 20.6 Output validation
+
+`tc07_summary.json` 必須包含：
+
+```text
+test config
+overall metrics
+derived ratios
+isStable
+cliff signals
+```
+
+`tc07_raw_summary.json` 必須包含所有 k6 原始 metrics。
+
+最終報告需要可推導：
+
+```text
+response timeout 建議值
+50% crash ratio 下最大穩定 workflow start RPS
+recovered-to-crashed ratio
+recovery latency p95
+short/medium task 的 response timeout 建議
+```
+
+---
+
+## 21. TC07 最終產出
 
 測完後整理：
 
@@ -588,7 +1064,7 @@ summary 至少包含：
 
 ---
 
-## 19. 對內 SLA / Worker 規範轉換
+## 22. 對內 SLA / Worker 規範轉換
 
 TC07 結果應轉成：
 

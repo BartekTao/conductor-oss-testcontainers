@@ -102,3 +102,81 @@ Capacity / retry matrix runs should increase `WORKFLOW_START_RPS`,
 
 - `tc06_summary.json`
 - `tc06_raw_summary.json`
+
+## TC07
+Worker crash / response timeout recovery test. TC07 keeps producer, crash
+worker, and recovery worker running together. The crash worker simulates a
+worker crash by polling a task and not sending any task update.
+
+Smoke run:
+
+k6 run \
+  -e BASE_URL="http://localhost:8080" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_NAME="wf_perf_tc07_smoke" \
+  -e TASK_TYPE="perf_task_tc07_smoke" \
+  -e WORKFLOW_VERSION=1 \
+  -e WORKFLOW_START_RPS=1 \
+  -e CRASH_WORKER_POLL_RPS=4 \
+  -e RECOVERY_WORKER_POLL_RPS=4 \
+  -e CRASH_RATIO=0.50 \
+  -e RETRY_COUNT=1 \
+  -e RETRY_DELAY_SECONDS=1 \
+  -e RESPONSE_TIMEOUT_SECONDS=5 \
+  -e TIMEOUT_SECONDS=30 \
+  -e TASK_TIMEOUT_POLICY=RETRY \
+  -e TEST_DURATION="30s" \
+  -e RECOVERY_GRACE_DURATION="20s" \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  -e STRICT_LATENCY_THRESHOLD=false \
+  k6/scenarios/tc07_worker_crash_recovery.js
+
+No-crash baseline:
+
+k6 run \
+  -e BASE_URL="http://localhost:8080" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_NAME="wf_perf_tc07_no_crash" \
+  -e TASK_TYPE="perf_task_tc07_no_crash" \
+  -e WORKFLOW_START_RPS=1 \
+  -e CRASH_WORKER_POLL_RPS=5 \
+  -e RECOVERY_WORKER_POLL_RPS=2 \
+  -e CRASH_RATIO=0 \
+  -e RETRY_COUNT=1 \
+  -e RETRY_DELAY_SECONDS=1 \
+  -e RESPONSE_TIMEOUT_SECONDS=3 \
+  -e TIMEOUT_SECONDS=20 \
+  -e TASK_TIMEOUT_POLICY=RETRY \
+  -e TEST_DURATION="10s" \
+  -e RECOVERY_GRACE_DURATION="5s" \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  k6/scenarios/tc07_worker_crash_recovery.js
+
+Recovery validation:
+
+k6 run \
+  -e BASE_URL="http://localhost:8080" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_NAME="wf_perf_tc07_recovery" \
+  -e TASK_TYPE="perf_task_tc07_recovery" \
+  -e WORKFLOW_START_RPS=1 \
+  -e CRASH_WORKER_POLL_RPS=5 \
+  -e RECOVERY_WORKER_POLL_RPS=5 \
+  -e CRASH_RATIO=1 \
+  -e RETRY_COUNT=1 \
+  -e RETRY_DELAY_SECONDS=1 \
+  -e RESPONSE_TIMEOUT_SECONDS=3 \
+  -e TIMEOUT_SECONDS=20 \
+  -e TASK_TIMEOUT_POLICY=RETRY \
+  -e TEST_DURATION="10s" \
+  -e RECOVERY_GRACE_DURATION="60s" \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  k6/scenarios/tc07_worker_crash_recovery.js
+
+The script writes:
+
+- `tc07_summary.json`
+- `tc07_raw_summary.json`
