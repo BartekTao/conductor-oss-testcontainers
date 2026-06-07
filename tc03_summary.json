@@ -1,0 +1,291 @@
+{
+  "testCase": "TC03",
+  "testRunId": "tc03-2026-06-07T08-35-40-264Z",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "pairCount": 2,
+  "maxPairCount": 2,
+  "pairPreloadWorkflowCount": 4,
+  "totalPreloadWorkflowCount": 8,
+  "pairPollRps": 1,
+  "expectedTotalPollRps": 2,
+  "testDuration": "3s",
+  "singlePairBaselineCompletedRps": 1,
+  "strictLatencyThreshold": false,
+  "activePairs": [
+    {
+      "pairId": "001",
+      "taskType": "perf_task_tc03_smoke2_001",
+      "workflowName": "wf_perf_tc03_smoke2_001"
+    },
+    {
+      "pairId": "002",
+      "taskType": "perf_task_tc03_smoke2_002",
+      "workflowName": "wf_perf_tc03_smoke2_002"
+    }
+  ],
+  "overall": {
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 23.832,
+        "med": 27.025,
+        "max": 33.931,
+        "p(90)": 33.9261,
+        "p(95)": 33.92855,
+        "avg": 27.992874999999998
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 27.992874999999998,
+        "min": 23.832,
+        "med": 27.025,
+        "max": 33.931,
+        "p(90)": 33.9261,
+        "p(95)": 33.92855
+      }
+    },
+    "task_update_latency": {
+      "values": {
+        "avg": 19.022874999999996,
+        "min": 16.46,
+        "med": 18.450499999999998,
+        "max": 23.349,
+        "p(90)": 22.5307,
+        "p(95)": 22.93985
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 2597.5,
+        "max": 4108,
+        "p(90)": 4059,
+        "p(95)": 4083.5,
+        "avg": 2597.25,
+        "min": 1093
+      }
+    },
+    "preloaded_workflows": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 8,
+        "rate": 1.8420103147972604
+      }
+    },
+    "preload_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "poll_attempts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 1.8420103147972604,
+        "count": 8
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 8,
+        "rate": 1.8420103147972604
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 8,
+        "rate": 1.8420103147972604
+      }
+    },
+    "poll_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "unexpected_task_type": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 0,
+        "rate": 1,
+        "passes": 8
+      }
+    },
+    "poll_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 8,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "task_complete_success_rate": {
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 8,
+        "fails": 0
+      }
+    }
+  },
+  "derived": {
+    "actualTaskCompletedRps": 2.6666666666666665,
+    "taskCompletedToPollAttemptRatio": 1,
+    "taskCompletedToTaskPolledRatio": 1,
+    "pollMissRatio": 0,
+    "scalingEfficiency": 1.3333333333333333,
+    "isStable": true
+  },
+  "perPair": [
+    {
+      "pairId": "001",
+      "workflowName": "wf_perf_tc03_smoke2_001",
+      "taskType": "perf_task_tc03_smoke2_001",
+      "preloadedWorkflows": 4,
+      "preloadErrors": 0,
+      "pollAttempts": 4,
+      "tasksPolled": 4,
+      "tasksCompleted": 4,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 1.3333333333333333,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 3959.65,
+      "taskUpdateP95Ms": 22.6233,
+      "scalingEfficiency": 1.3333333333333333,
+      "isStable": true
+    },
+    {
+      "pairId": "002",
+      "workflowName": "wf_perf_tc03_smoke2_002",
+      "taskType": "perf_task_tc03_smoke2_002",
+      "preloadedWorkflows": 4,
+      "preloadErrors": 0,
+      "pollAttempts": 4,
+      "tasksPolled": 4,
+      "tasksCompleted": 4,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 1.3333333333333333,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 3891.75,
+      "taskUpdateP95Ms": 21.62935,
+      "scalingEfficiency": 1.3333333333333333,
+      "isStable": true
+    }
+  ],
+  "setup": {
+    "preloadedWorkflows": 8,
+    "preloadErrors": 0,
+    "definitionResults": [
+      {
+        "pairId": "001",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_smoke2_001",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_smoke2_001"
+      },
+      {
+        "pairId": "002",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_smoke2_002",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_smoke2_002"
+      }
+    ],
+    "preloadResults": [
+      {
+        "taskType": "perf_task_tc03_smoke2_001",
+        "workflowName": "wf_perf_tc03_smoke2_001",
+        "pairId": "001",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 4,
+        "ready": true
+      },
+      {
+        "workflowName": "wf_perf_tc03_smoke2_002",
+        "pairId": "002",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 4,
+        "ready": true,
+        "taskType": "perf_task_tc03_smoke2_002"
+      }
+    ]
+  }
+}

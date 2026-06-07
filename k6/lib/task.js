@@ -115,10 +115,10 @@ export function normalizeEpochMs(value) {
   return numberValue;
 }
 
-export function addNonNegativeLatency(metric, receivedAtMs, rawStartedAt) {
+export function addNonNegativeLatency(metric, receivedAtMs, rawStartedAt, tags) {
   const latency = receivedAtMs - normalizeEpochMs(rawStartedAt);
 
   if (latency >= 0) {
-    metric.add(latency);
+    metric.add(latency, tags);
   }
 }
