@@ -9,7 +9,7 @@ k6 run \
   -e FAIL_ON_DEFINITION_MISMATCH=true \
   -e VUS=1 \
   -e ITERATIONS=10 \
-  tc00_smoke_collect_metrics.js
+  k6/scenarios/tc00_smoke_collect_metrics.js
 
 ## TC01
 k6 run \

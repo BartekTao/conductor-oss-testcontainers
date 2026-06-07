@@ -107,6 +107,13 @@ export function createConductorClient(config) {
       );
     },
 
+    getWorkflow(workflowId) {
+      return http.get(
+        this.api(`/workflow/${encodeURIComponent(workflowId)}?includeTasks=true`),
+        this.jsonParams({ op: 'get_workflow' }),
+      );
+    },
+
     buildStartWorkflowRequest(workflowName, version, input, correlationId) {
       const endpoint =
         `/workflow/${encodeURIComponent(workflowName)}` +
