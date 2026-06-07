@@ -1,0 +1,375 @@
+{
+  "testCase": "TC03",
+  "testRunId": "tc03-capacity-20260607_164803-p4",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "pairCount": 4,
+  "maxPairCount": 4,
+  "pairPreloadWorkflowCount": 900,
+  "totalPreloadWorkflowCount": 3600,
+  "pairPollRps": 40,
+  "expectedTotalPollRps": 160,
+  "testDuration": "15s",
+  "singlePairBaselineCompletedRps": 40,
+  "strictLatencyThreshold": false,
+  "activePairs": [
+    {
+      "pairId": "001",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_001",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_001"
+    },
+    {
+      "pairId": "002",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_002",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_002"
+    },
+    {
+      "pairId": "003",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_003",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_003"
+    },
+    {
+      "pairId": "004",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_004",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_004"
+    }
+  ],
+  "overall": {
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 10.624,
+        "med": 3281.84,
+        "max": 6993.781,
+        "p(90)": 5172.2547,
+        "p(95)": 5745.739199999999,
+        "avg": 3133.307569343066
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 5172.2547,
+        "p(95)": 5745.739199999999,
+        "avg": 3133.307569343066,
+        "min": 10.624,
+        "med": 3281.84,
+        "max": 6993.781
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 5142.54705,
+        "avg": 3141.8814124087617,
+        "min": 13.151,
+        "med": 3521.703,
+        "max": 6176.225,
+        "p(90)": 5016.5297
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 22250.4,
+        "p(95)": 24100.3,
+        "avg": 14630.549270072992,
+        "min": 2210,
+        "med": 15092.5,
+        "max": 27391
+      }
+    },
+    "preloaded_workflows": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 3600,
+        "rate": 124.57891030619524
+      }
+    },
+    "preload_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "poll_attempts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 56.89103570649583,
+        "count": 1644
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1644,
+        "rate": 56.89103570649583
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1644,
+        "rate": 56.89103570649583
+      }
+    },
+    "poll_errors": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "values": {
+        "rate": 0,
+        "count": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "unexpected_task_type": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      }
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 0,
+        "rate": 1,
+        "passes": 1644
+      }
+    },
+    "poll_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1644,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "task_complete_success_rate": {
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1644,
+        "fails": 0
+      }
+    }
+  },
+  "derived": {
+    "actualTaskCompletedRps": 109.6,
+    "taskCompletedToPollAttemptRatio": 1,
+    "taskCompletedToTaskPolledRatio": 1,
+    "pollMissRatio": 0,
+    "scalingEfficiency": 0.6849999999999999,
+    "isStable": false
+  },
+  "perPair": [
+    {
+      "pairId": "001",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_001",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_001",
+      "preloadedWorkflows": 900,
+      "preloadErrors": 0,
+      "pollAttempts": 408,
+      "tasksPolled": 408,
+      "tasksCompleted": 408,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 27.2,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 26178.4,
+      "taskUpdateP95Ms": 5083.28495,
+      "scalingEfficiency": 0.6799999999999999,
+      "isStable": false
+    },
+    {
+      "pairId": "002",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_002",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_002",
+      "preloadedWorkflows": 900,
+      "preloadErrors": 0,
+      "pollAttempts": 410,
+      "tasksPolled": 410,
+      "tasksCompleted": 410,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 27.333333333333332,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 24108.1,
+      "taskUpdateP95Ms": 5128.0826,
+      "scalingEfficiency": 0.6833333333333333,
+      "isStable": false
+    },
+    {
+      "pairId": "003",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_003",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_003",
+      "preloadedWorkflows": 900,
+      "preloadErrors": 0,
+      "pollAttempts": 418,
+      "tasksPolled": 418,
+      "tasksCompleted": 418,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 27.866666666666667,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 22206.1,
+      "taskUpdateP95Ms": 5154.1835,
+      "scalingEfficiency": 0.6966666666666667,
+      "isStable": false
+    },
+    {
+      "pairId": "004",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_004",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p4_004",
+      "preloadedWorkflows": 900,
+      "preloadErrors": 0,
+      "pollAttempts": 408,
+      "tasksPolled": 408,
+      "tasksCompleted": 408,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 27.2,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 21111.3,
+      "taskUpdateP95Ms": 5160.230199999999,
+      "scalingEfficiency": 0.6799999999999999,
+      "isStable": false
+    }
+  ],
+  "setup": {
+    "preloadedWorkflows": 3600,
+    "preloadErrors": 0,
+    "definitionResults": [
+      {
+        "pairId": "001",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_001",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_001"
+      },
+      {
+        "pairId": "002",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_002",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_002"
+      },
+      {
+        "pairId": "003",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_003",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_003"
+      },
+      {
+        "pairId": "004",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_004",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_004"
+      }
+    ],
+    "preloadResults": [
+      {
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_001",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_001",
+        "pairId": "001",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 900,
+        "ready": true
+      },
+      {
+        "ready": true,
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_002",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_002",
+        "pairId": "002",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 900
+      },
+      {
+        "pairId": "003",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 900,
+        "ready": true,
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_003",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_003"
+      },
+      {
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p4_004",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p4_004",
+        "pairId": "004",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 900,
+        "ready": true
+      }
+    ]
+  }
+}

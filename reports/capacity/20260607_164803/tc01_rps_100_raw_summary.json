@@ -1,0 +1,407 @@
+{
+  "metrics": {
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1173,
+        "rate": 55.58427699450649
+      }
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0.48804999999999976,
+        "avg": 0.07033695652173844,
+        "min": 0,
+        "med": 0.003,
+        "max": 10.8,
+        "p(90)": 0.029
+      }
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 704.9805086956508,
+        "min": 1.551,
+        "med": 29.0305,
+        "max": 5353.261,
+        "p(90)": 2269.4533,
+        "p(95)": 3285.0641
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 2269.5415,
+        "p(95)": 3285.10185,
+        "avg": 705.0919689130419,
+        "min": 1.607,
+        "med": 29.0675,
+        "max": 5353.305
+      }
+    },
+    "preload_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.02768282608695689,
+        "min": 0.002,
+        "med": 0.013,
+        "max": 13.232,
+        "p(90)": 0.047,
+        "p(95)": 0.0790499999999998
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 12854.618600682594,
+        "min": 6232,
+        "med": 15055,
+        "max": 18316,
+        "p(90)": 17137.9,
+        "p(95)": 18016.9
+      }
+    },
+    "dropped_iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 329,
+        "rate": 15.590133956685962
+      }
+    },
+    "checks": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.0004347826086956522,
+        "passes": 2,
+        "fails": 4598
+      }
+    },
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1491.2022047781575,
+        "min": 1.785,
+        "med": 1107.6019999999999,
+        "max": 5328.683,
+        "p(90)": 3313.7826,
+        "p(95)": 3874.960649999999
+      }
+    },
+    "poll_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 3992749,
+        "rate": 189202.10263046785
+      }
+    },
+    "vus_max": {
+      "contains": "default",
+      "values": {
+        "value": 401,
+        "min": 101,
+        "max": 401
+      },
+      "type": "gauge"
+    },
+    "http_req_receiving": {
+      "contains": "time",
+      "values": {
+        "p(90)": 0.074,
+        "p(95)": 0.11,
+        "avg": 0.08377739130434751,
+        "min": 0.005,
+        "med": 0.034,
+        "max": 11.789
+      },
+      "type": "trend"
+    },
+    "vus": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "min": 0,
+        "max": 393,
+        "value": 160
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1253.9874872013638,
+        "min": 2.949,
+        "med": 1239.1135,
+        "max": 5353.305,
+        "p(90)": 3278.7917,
+        "p(95)": 3333.65635
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 3874.960649999999,
+        "avg": 1491.2022047781575,
+        "min": 1.785,
+        "med": 1107.6019999999999,
+        "max": 5328.683,
+        "p(90)": 3313.7826
+      }
+    },
+    "poll_attempts": {
+      "contains": "default",
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      },
+      "type": "counter"
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "complete_errors": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "task_complete_success_rate": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate"
+    },
+    "unexpected_task_type": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 4600,
+        "rate": 217.9775568412019
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "contains": "time",
+      "values": {
+        "p(90)": 2269.7145,
+        "p(95)": 3285.10955,
+        "avg": 705.3919077859924,
+        "min": 1.607,
+        "med": 29.447,
+        "max": 5353.305
+      },
+      "type": "trend"
+    },
+    "tasks_polled": {
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "iteration_duration": {
+      "contains": "time",
+      "values": {
+        "max": 6679.508042,
+        "p(90)": 5170.1933582,
+        "p(95)": 5519.061500199999,
+        "avg": 2743.7617116308625,
+        "min": 0.188542,
+        "med": 2568.217417
+      },
+      "type": "trend"
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      }
+    },
+    "data_sent": {
+      "values": {
+        "rate": 78964.50235486841,
+        "count": 1666395
+      },
+      "type": "counter",
+      "contains": "data"
+    },
+    "preloaded_workflows": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 2250,
+        "rate": 106.61945715058789
+      }
+    },
+    "poll_errors": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 0,
+        "max": 10.689,
+        "p(90)": 0,
+        "p(95)": 0.413,
+        "avg": 0.05401521739130441,
+        "min": 0
+      }
+    }
+  },
+  "setup_data": {
+    "taskType": "perf_task_tc01_capacity_20260607_164803_r100",
+    "testRunId": "tc01-capacity-20260607_164803-r100",
+    "workflowDefinitionAction": "created",
+    "workflowName": "wf_perf_tc01_capacity_20260607_164803_r100",
+    "workflowVersion": 1,
+    "preloadErrors": 0,
+    "readyCheck": {
+      "expectedMinTasks": 1000,
+      "mode": "preload_success",
+      "ready": true,
+      "timeoutMs": 300000
+    },
+    "taskDefinitionAction": "created",
+    "preloadWorkflowCount": 2250,
+    "preloadedWorkflows": 2250
+  },
+  "root_group": {
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "path": "::complete task status is 200/204",
+          "id": "ff416610a822a23eea2e5bff610f8f13",
+          "passes": 1172,
+          "fails": 0,
+          "name": "complete task status is 200/204"
+        }
+      ],
+    "name": "",
+    "path": ""
+  },
+  "options": {
+    "noColor": true,
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": ""
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 21103.09
+  }
+}

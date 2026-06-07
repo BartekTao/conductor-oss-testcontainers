@@ -1,13 +1,13 @@
 {
   "testCase": "TC01",
-  "testRunId": "tc01-capacity-20260607_164803-r40",
+  "testRunId": "tc01-capacity-20260607_164803-r60",
   "baseUrl": "http://localhost:8080",
   "apiPrefix": "/api",
-  "workflowName": "wf_perf_tc01_capacity_20260607_164803_r40",
-  "taskType": "perf_task_tc01_capacity_20260607_164803_r40",
+  "workflowName": "wf_perf_tc01_capacity_20260607_164803_r60",
+  "taskType": "perf_task_tc01_capacity_20260607_164803_r60",
   "workflowVersion": 1,
-  "preloadWorkflowCount": 900,
-  "pollRps": 40,
+  "preloadWorkflowCount": 1350,
+  "pollRps": 60,
   "testDuration": "15s",
   "strictLatencyThreshold": false,
   "readyCheck": {
@@ -21,88 +21,88 @@
       "type": "trend",
       "contains": "time",
       "values": {
-        "max": 1035.664,
-        "p(90)": 9.901,
-        "p(95)": 279.31,
-        "avg": 41.09708319467553,
-        "min": 2.539,
-        "med": 3.668
+        "med": 2.7859999999999996,
+        "max": 1037.076,
+        "p(90)": 272.0164000000002,
+        "p(95)": 651.5082499999996,
+        "avg": 73.95894666666666,
+        "min": 1.923
       }
     },
     "poll_hit_latency": {
-      "values": {
-        "p(95)": 279.31,
-        "avg": 41.09708319467553,
-        "min": 2.539,
-        "med": 3.668,
-        "max": 1035.664,
-        "p(90)": 9.901
-      },
       "type": "trend",
-      "contains": "time"
+      "contains": "time",
+      "values": {
+        "med": 2.7859999999999996,
+        "max": 1037.076,
+        "p(90)": 272.0164000000002,
+        "p(95)": 651.5082499999996,
+        "avg": 73.95894666666666,
+        "min": 1.923
+      }
     },
     "task_update_latency": {
       "type": "trend",
       "contains": "time",
       "values": {
-        "avg": 9.30233444259567,
-        "min": 3.429,
-        "med": 4.986,
-        "max": 1058.625,
-        "p(90)": 13.625,
-        "p(95)": 26.135
+        "avg": 15.12599555555554,
+        "min": 3.026,
+        "med": 4.4805,
+        "max": 1060.164,
+        "p(90)": 35.040800000000004,
+        "p(95)": 48.636799999999994
       }
     },
     "task_scheduled_to_poll_latency": {
-      "type": "trend",
-      "contains": "time",
       "values": {
-        "p(90)": 14949,
-        "p(95)": 16087,
-        "avg": 9383.61064891847,
-        "min": 2418,
-        "med": 9299,
-        "max": 16371
-      }
+        "med": 9848.5,
+        "max": 16582,
+        "p(90)": 15196.6,
+        "p(95)": 15894.849999999999,
+        "avg": 9840.881111111112,
+        "min": 3069
+      },
+      "type": "trend",
+      "contains": "time"
     },
     "preloaded_workflows": {
       "type": "counter",
       "contains": "default",
       "values": {
-        "count": 900,
-        "rate": 51.46670384468858
+        "count": 1350,
+        "rate": 74.48407364985202
       }
     },
     "preload_errors": {
-      "type": "counter",
       "contains": "default",
       "values": {
         "count": 0,
         "rate": 0
-      }
+      },
+      "type": "counter"
     },
     "poll_attempts": {
+      "values": {
+        "count": 900,
+        "rate": 49.656049099901345
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "tasks_polled": {
       "type": "counter",
       "contains": "default",
       "values": {
-        "count": 601,
-        "rate": 34.368321122953155
+        "count": 900,
+        "rate": 49.656049099901345
       }
-    },
-    "tasks_polled": {
-      "contains": "default",
-      "values": {
-        "count": 601,
-        "rate": 34.368321122953155
-      },
-      "type": "counter"
     },
     "tasks_completed": {
       "type": "counter",
       "contains": "default",
       "values": {
-        "count": 601,
-        "rate": 34.368321122953155
+        "count": 900,
+        "rate": 49.656049099901345
       }
     },
     "poll_errors": {
@@ -114,12 +114,12 @@
       "contains": "default"
     },
     "complete_errors": {
-      "type": "counter",
-      "contains": "default",
       "values": {
         "count": 0,
         "rate": 0
-      }
+      },
+      "type": "counter",
+      "contains": "default"
     },
     "missing_task_scheduled_time": {
       "type": "counter",
@@ -130,19 +130,19 @@
       }
     },
     "unexpected_task_type": {
+      "type": "counter",
+      "contains": "default",
       "values": {
         "count": 0,
         "rate": 0
-      },
-      "type": "counter",
-      "contains": "default"
+      }
     },
     "errors": {
       "type": "counter",
       "contains": "default",
       "values": {
-        "rate": 0,
-        "count": 0
+        "count": 0,
+        "rate": 0
       },
       "thresholds": {
         "count==0": {
@@ -155,7 +155,7 @@
       "contains": "default",
       "values": {
         "rate": 1,
-        "passes": 601,
+        "passes": 900,
         "fails": 0
       }
     },
@@ -163,9 +163,9 @@
       "type": "rate",
       "contains": "default",
       "values": {
-        "fails": 0,
         "rate": 1,
-        "passes": 601
+        "passes": 900,
+        "fails": 0
       },
       "thresholds": {
         "rate>=0.99": {
@@ -178,7 +178,7 @@
       "contains": "default",
       "values": {
         "rate": 1,
-        "passes": 601,
+        "passes": 900,
         "fails": 0
       },
       "thresholds": {
