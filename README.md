@@ -50,3 +50,55 @@ k6 run \
   -e FAIL_ON_DEFINITION_MISMATCH=true \
   -e STRICT_LATENCY_THRESHOLD=false \
   k6/scenarios/tc03_preloaded_independent_poll_scale.js
+
+## TC06
+Retry storm test. TC06 keeps workflow producer and task worker running at the
+same time, then injects task failures by `FAIL_RATIO` to measure retry
+amplification and latency impact.
+
+Smoke run:
+
+k6 run \
+  -e BASE_URL="http://localhost:8080" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_NAME="wf_perf_tc06_smoke" \
+  -e TASK_TYPE="perf_task_tc06_smoke" \
+  -e WORKFLOW_VERSION=1 \
+  -e WORKFLOW_START_RPS=1 \
+  -e POLL_RPS=5 \
+  -e FAIL_RATIO=0.10 \
+  -e RETRY_COUNT=1 \
+  -e RETRY_DELAY_SECONDS=1 \
+  -e TEST_DURATION="30s" \
+  -e PRODUCER_PRE_ALLOCATED_VUS=2 \
+  -e PRODUCER_MAX_VUS=10 \
+  -e WORKER_PRE_ALLOCATED_VUS=5 \
+  -e WORKER_MAX_VUS=20 \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  -e STRICT_LATENCY_THRESHOLD=false \
+  k6/scenarios/tc06_retry_storm.js
+
+No-failure baseline:
+
+k6 run \
+  -e BASE_URL="http://localhost:8080" \
+  -e API_PREFIX="/api" \
+  -e WORKFLOW_NAME="wf_perf_tc06_no_fail" \
+  -e TASK_TYPE="perf_task_tc06_no_fail" \
+  -e WORKFLOW_START_RPS=1 \
+  -e POLL_RPS=3 \
+  -e FAIL_RATIO=0 \
+  -e RETRY_COUNT=1 \
+  -e RETRY_DELAY_SECONDS=1 \
+  -e TEST_DURATION="30s" \
+  -e AUTO_CREATE_DEFINITIONS=true \
+  -e FAIL_ON_DEFINITION_MISMATCH=false \
+  k6/scenarios/tc06_retry_storm.js
+
+Capacity / retry matrix runs should increase `WORKFLOW_START_RPS`,
+`FAIL_RATIO`, `RETRY_COUNT`, and `RETRY_DELAY_SECONDS` according to
+`spec/spec-tc06.md`. The script writes:
+
+- `tc06_summary.json`
+- `tc06_raw_summary.json`
