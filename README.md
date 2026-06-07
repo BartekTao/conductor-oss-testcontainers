@@ -1,3 +1,4 @@
+## TC00
 k6 run \
   -e BASE_URL="http://localhost:8080" \
   -e API_PREFIX="/api" \
