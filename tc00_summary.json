@@ -1,0 +1,171 @@
+{
+  "testRunId": "tc00-2026-06-07T08-41-26-269Z",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "workflowName": "wf_perf_tc00_report_20260607_164044",
+  "taskType": "perf_task_tc00_report_20260607_164044",
+  "workflowVersion": 1,
+  "vus": 1,
+  "iterations": 10,
+  "strictWorkflowMatch": true,
+  "autoCreateDefinitions": true,
+  "failOnDefinitionMismatch": true,
+  "metrics": {
+    "workflow_start_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 19.7214,
+        "min": 8.333,
+        "med": 14.273,
+        "max": 77.465,
+        "p(90)": 24.252500000000012,
+        "p(95)": 50.85874999999998
+      }
+    },
+    "poll_attempt_latency": {
+      "contains": "time",
+      "values": {
+        "p(90)": 17.9324,
+        "p(95)": 21.957199999999997,
+        "avg": 11.4143,
+        "min": 5.061,
+        "med": 9.575,
+        "max": 25.982
+      },
+      "type": "trend"
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 17.9324,
+        "p(95)": 21.957199999999997,
+        "avg": 11.4143,
+        "min": 5.061,
+        "med": 9.575,
+        "max": 25.982
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 19.2611,
+        "min": 8.735,
+        "med": 13.581,
+        "max": 69.459,
+        "p(90)": 23.14770000000001,
+        "p(95)": 46.30334999999998
+      }
+    },
+    "workflow_get_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 2.834,
+        "avg": 2.24,
+        "min": 1.402,
+        "med": 2.346,
+        "max": 2.942,
+        "p(90)": 2.726
+      }
+    },
+    "workflow_e2e_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 125,
+        "p(90)": 110.60000000000001,
+        "p(95)": 117.8,
+        "avg": 53.9,
+        "min": 24,
+        "med": 41
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "contains": "time",
+      "values": {
+        "min": 10,
+        "med": 17,
+        "max": 41,
+        "p(90)": 31.1,
+        "p(95)": 36.05,
+        "avg": 19.9
+      },
+      "type": "trend"
+    },
+    "workflow_submit_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 32,
+        "min": 14,
+        "med": 24.5,
+        "max": 105,
+        "p(90)": 43.80000000000001,
+        "p(95)": 74.39999999999998
+      }
+    },
+    "workflows_started": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "workflow_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 10,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "poll_hit_rate": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 10,
+        "fails": 0
+      },
+      "type": "rate"
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    }
+  }
+}

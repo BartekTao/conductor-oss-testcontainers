@@ -1,0 +1,197 @@
+{
+  "testCase": "TC01",
+  "testRunId": "tc01-capacity-20260607_164803-r100",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "workflowName": "wf_perf_tc01_capacity_20260607_164803_r100",
+  "taskType": "perf_task_tc01_capacity_20260607_164803_r100",
+  "workflowVersion": 1,
+  "preloadWorkflowCount": 2250,
+  "pollRps": 100,
+  "testDuration": "15s",
+  "strictLatencyThreshold": false,
+  "readyCheck": {
+    "expectedMinTasks": 1000,
+    "mode": "preload_success",
+    "ready": true,
+    "timeoutMs": 300000
+  },
+  "metrics": {
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1491.2022047781575,
+        "min": 1.785,
+        "med": 1107.6019999999999,
+        "max": 5328.683,
+        "p(90)": 3313.7826,
+        "p(95)": 3874.960649999999
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 5328.683,
+        "p(90)": 3313.7826,
+        "p(95)": 3874.960649999999,
+        "avg": 1491.2022047781575,
+        "min": 1.785,
+        "med": 1107.6019999999999
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 3333.65635,
+        "avg": 1253.9874872013638,
+        "min": 2.949,
+        "med": 1239.1135,
+        "max": 5353.305,
+        "p(90)": 3278.7917
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 15055,
+        "max": 18316,
+        "p(90)": 17137.9,
+        "p(95)": 18016.9,
+        "avg": 12854.618600682594,
+        "min": 6232
+      }
+    },
+    "preloaded_workflows": {
+      "values": {
+        "count": 2250,
+        "rate": 106.61945715058789
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "preload_errors": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "poll_attempts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 1172,
+        "rate": 55.53689056910623
+      }
+    },
+    "poll_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "unexpected_task_type": {
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter"
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 0,
+        "rate": 1,
+        "passes": 1172
+      }
+    },
+    "task_complete_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "poll_success_rate": {
+      "values": {
+        "rate": 1,
+        "passes": 1172,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    }
+  },
+  "derived": {
+    "taskCompletedToPollAttemptRatio": 1,
+    "taskCompletedToTaskPolledRatio": 1,
+    "pollMissRatio": 0,
+    "isStable": true
+  }
+}

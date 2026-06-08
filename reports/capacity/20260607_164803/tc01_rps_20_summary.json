@@ -1,0 +1,197 @@
+{
+  "testCase": "TC01",
+  "testRunId": "tc01-capacity-20260607_164803-r20",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "workflowName": "wf_perf_tc01_capacity_20260607_164803_r20",
+  "taskType": "perf_task_tc01_capacity_20260607_164803_r20",
+  "workflowVersion": 1,
+  "preloadWorkflowCount": 450,
+  "pollRps": 20,
+  "testDuration": "15s",
+  "strictLatencyThreshold": false,
+  "readyCheck": {
+    "expectedMinTasks": 1000,
+    "mode": "preload_success",
+    "ready": true,
+    "timeoutMs": 300000
+  },
+  "metrics": {
+    "poll_attempt_latency": {
+      "contains": "time",
+      "values": {
+        "med": 7.051,
+        "max": 201.574,
+        "p(90)": 16.863,
+        "p(95)": 27.406,
+        "avg": 12.048269102990025,
+        "min": 3.981
+      },
+      "type": "trend"
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 27.406,
+        "avg": 12.048269102990025,
+        "min": 3.981,
+        "med": 7.051,
+        "max": 201.574,
+        "p(90)": 16.863
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 110.141,
+        "p(90)": 21.665,
+        "p(95)": 43.593,
+        "avg": 13.71197674418604,
+        "min": 5.399,
+        "med": 9.741
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "contains": "time",
+      "values": {
+        "max": 16445,
+        "p(90)": 15032,
+        "p(95)": 15735,
+        "avg": 9527.916943521595,
+        "min": 2738,
+        "med": 9473
+      },
+      "type": "trend"
+    },
+    "preloaded_workflows": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 25.18242568876033,
+        "count": 450
+      }
+    },
+    "preload_errors": {
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter",
+      "contains": "default"
+    },
+    "poll_attempts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 301,
+        "rate": 16.84424473848191
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 301,
+        "rate": 16.84424473848191
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 301,
+        "rate": 16.84424473848191
+      }
+    },
+    "poll_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "count": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "unexpected_task_type": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "errors": {
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      },
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 301,
+        "fails": 0
+      }
+    },
+    "task_complete_success_rate": {
+      "values": {
+        "rate": 1,
+        "passes": 301,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "poll_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 301,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    }
+  },
+  "derived": {
+    "taskCompletedToPollAttemptRatio": 1,
+    "taskCompletedToTaskPolledRatio": 1,
+    "pollMissRatio": 0,
+    "isStable": true
+  }
+}

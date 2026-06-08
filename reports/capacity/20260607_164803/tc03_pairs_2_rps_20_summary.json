@@ -1,0 +1,305 @@
+{
+  "testCase": "TC03",
+  "testRunId": "tc03-capacity-20260607_164803-p2-r20",
+  "baseUrl": "http://localhost:8080",
+  "apiPrefix": "/api",
+  "pairCount": 2,
+  "maxPairCount": 4,
+  "pairPreloadWorkflowCount": 450,
+  "totalPreloadWorkflowCount": 900,
+  "pairPollRps": 20,
+  "expectedTotalPollRps": 40,
+  "testDuration": "15s",
+  "singlePairBaselineCompletedRps": 20,
+  "strictLatencyThreshold": false,
+  "activePairs": [
+    {
+      "pairId": "001",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_001",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_001"
+    },
+    {
+      "pairId": "002",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_002",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_002"
+    }
+  ],
+  "overall": {
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 1368.8763999999999,
+        "avg": 569.1012373472953,
+        "min": 3.97,
+        "med": 536.527,
+        "max": 2072.845,
+        "p(90)": 1023.5314
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 569.1012373472953,
+        "min": 3.97,
+        "med": 536.527,
+        "max": 2072.845,
+        "p(90)": 1023.5314,
+        "p(95)": 1368.8763999999999
+      }
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 4.483,
+        "med": 63.253,
+        "max": 2107.622,
+        "p(90)": 1083.7374,
+        "p(95)": 1091.1399999999999,
+        "avg": 368.2916492146597
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 10169.228621291448,
+        "min": 1990,
+        "med": 9872,
+        "max": 17421,
+        "p(90)": 15814.2,
+        "p(95)": 16578.39999999999
+      }
+    },
+    "preloaded_workflows": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 900,
+        "rate": 47.566920314626636
+      }
+    },
+    "preload_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "poll_attempts": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 573,
+        "rate": 30.28427260031229
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 573,
+        "rate": 30.28427260031229
+      }
+    },
+    "tasks_completed": {
+      "contains": "default",
+      "values": {
+        "count": 573,
+        "rate": 30.28427260031229
+      },
+      "type": "counter"
+    },
+    "poll_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "complete_errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      }
+    },
+    "missing_task_scheduled_time": {
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter"
+    },
+    "unexpected_task_type": {
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "type": "counter"
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 573,
+        "fails": 0
+      }
+    },
+    "poll_success_rate": {
+      "contains": "default",
+      "values": {
+        "fails": 0,
+        "rate": 1,
+        "passes": 573
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate"
+    },
+    "task_complete_success_rate": {
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "fails": 0,
+        "rate": 1,
+        "passes": 573
+      }
+    }
+  },
+  "derived": {
+    "actualTaskCompletedRps": 38.2,
+    "taskCompletedToPollAttemptRatio": 1,
+    "taskCompletedToTaskPolledRatio": 1,
+    "pollMissRatio": 0,
+    "scalingEfficiency": 0.9550000000000001,
+    "isStable": true
+  },
+  "perPair": [
+    {
+      "pairId": "001",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_001",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_001",
+      "preloadedWorkflows": 450,
+      "preloadErrors": 0,
+      "pollAttempts": 286,
+      "tasksPolled": 286,
+      "tasksCompleted": 286,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 19.066666666666666,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 16855,
+      "taskUpdateP95Ms": 1092.6955,
+      "scalingEfficiency": 0.9533333333333334,
+      "isStable": true
+    },
+    {
+      "pairId": "002",
+      "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_002",
+      "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_002",
+      "preloadedWorkflows": 450,
+      "preloadErrors": 0,
+      "pollAttempts": 287,
+      "tasksPolled": 287,
+      "tasksCompleted": 287,
+      "pollMisses": 0,
+      "pollErrors": 0,
+      "completeErrors": 0,
+      "actualTaskCompletedRps": 19.133333333333333,
+      "taskCompletedToPollAttemptRatio": 1,
+      "taskCompletedToTaskPolledRatio": 1,
+      "pollSuccessRate": 1,
+      "taskCompleteSuccessRate": 1,
+      "scheduleToPollP95Ms": 16126.4,
+      "taskUpdateP95Ms": 1090.8487,
+      "scalingEfficiency": 0.9566666666666667,
+      "isStable": true
+    }
+  ],
+  "setup": {
+    "preloadedWorkflows": 900,
+    "preloadErrors": 0,
+    "definitionResults": [
+      {
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_001",
+        "pairId": "001",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_001"
+      },
+      {
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_002",
+        "pairId": "002",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_002",
+        "workflowDefinitionAction": "created"
+      },
+      {
+        "pairId": "003",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_003",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_003"
+      },
+      {
+        "pairId": "004",
+        "taskDefinitionAction": "created",
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_004",
+        "workflowDefinitionAction": "created",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_004"
+      }
+    ],
+    "preloadResults": [
+      {
+        "pairId": "001",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 450,
+        "ready": true,
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_001",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_001"
+      },
+      {
+        "taskType": "perf_task_tc03_capacity_20260607_164803_p2r20_002",
+        "workflowName": "wf_perf_tc03_capacity_20260607_164803_p2r20_002",
+        "pairId": "002",
+        "preloadErrors": 0,
+        "preloadedWorkflows": 450,
+        "ready": true
+      }
+    ]
+  }
+}

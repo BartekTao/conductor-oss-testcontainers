@@ -1,0 +1,372 @@
+{
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": true
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 663.305
+  },
+  "metrics": {
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.014369565217391305,
+        "min": 0,
+        "med": 0,
+        "max": 0.348,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0.038,
+        "avg": 0.028978260869565196,
+        "min": 0.007,
+        "med": 0.013,
+        "max": 0.658,
+        "p(90)": 0.0245
+      }
+    },
+    "errors": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 0,
+        "rate": 0
+      },
+      "thresholds": {
+        "count==0": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_tls_handshaking": {
+      "values": {
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0,
+        "p(90)": 0,
+        "p(95)": 0
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "data_received": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 90770,
+        "rate": 136845.0411198468
+      }
+    },
+    "workflow_success_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 10,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>=0.99": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 13.771065217391305,
+        "min": 1.402,
+        "med": 10.0495,
+        "max": 77.465,
+        "p(90)": 22.16100000000001,
+        "p(95)": 52.48749999999994
+      }
+    },
+    "poll_attempt_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 21.957199999999997,
+        "avg": 11.4143,
+        "min": 5.061,
+        "med": 9.575,
+        "max": 25.982,
+        "p(90)": 17.9324
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 46,
+        "rate": 69.34969584127965
+      }
+    },
+    "tasks_completed": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "iteration_duration": {
+      "values": {
+        "p(95)": 118.79638505,
+        "avg": 54.043441800000004,
+        "min": 24.255709,
+        "med": 40.761292,
+        "max": 126.554291,
+        "p(90)": 111.0384791
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "task_update_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 8.735,
+        "med": 13.581,
+        "max": 69.459,
+        "p(90)": 23.14770000000001,
+        "p(95)": 46.30334999999998,
+        "avg": 19.2611
+      }
+    },
+    "workflow_e2e_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 53.9,
+        "min": 24,
+        "med": 41,
+        "max": 125,
+        "p(90)": 110.60000000000001,
+        "p(95)": 117.8
+      }
+    },
+    "task_scheduled_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 36.05,
+        "avg": 19.9,
+        "min": 10,
+        "med": 17,
+        "max": 41,
+        "p(90)": 31.1
+      }
+    },
+    "workflow_get_latency": {
+      "contains": "time",
+      "values": {
+        "p(90)": 2.726,
+        "p(95)": 2.834,
+        "avg": 2.24,
+        "min": 1.402,
+        "med": 2.346,
+        "max": 2.942
+      },
+      "type": "trend"
+    },
+    "http_req_failed": {
+      "values": {
+        "rate": 0.043478260869565216,
+        "passes": 2,
+        "fails": 44
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "workflows_started": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "tasks_polled": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 15.076020835060794
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 12.921045454545453,
+        "min": 1.402,
+        "med": 10.0495,
+        "max": 77.465,
+        "p(90)": 18.238599999999998,
+        "p(95)": 29.58684999999999
+      }
+    },
+    "checks": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 30,
+        "fails": 0
+      },
+      "type": "rate"
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 1.057,
+        "p(90)": 0.14100000000000001,
+        "p(95)": 0.27499999999999974,
+        "avg": 0.10413043478260864,
+        "min": 0.028,
+        "med": 0.0525
+      }
+    },
+    "data_sent": {
+      "contains": "data",
+      "values": {
+        "count": 15225,
+        "rate": 22953.241721380058
+      },
+      "type": "counter"
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 13.637956521739131,
+        "min": 1.366,
+        "med": 9.9955,
+        "max": 77.36,
+        "p(90)": 22.07700000000001,
+        "p(95)": 51.17549999999994
+      }
+    },
+    "poll_hit_rate": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 10,
+        "fails": 0
+      }
+    },
+    "workflow_start_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 14.273,
+        "max": 77.465,
+        "p(90)": 24.252500000000012,
+        "p(95)": 50.85874999999998,
+        "avg": 19.7214,
+        "min": 8.333
+      }
+    },
+    "http_req_blocked": {
+      "contains": "time",
+      "values": {
+        "p(95)": 0.013499999999999996,
+        "avg": 0.1905000000000002,
+        "min": 0.001,
+        "med": 0.003,
+        "max": 8.252,
+        "p(90)": 0.004500000000000001
+      },
+      "type": "trend"
+    },
+    "workflow_submit_to_poll_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 32,
+        "min": 14,
+        "med": 24.5,
+        "max": 105,
+        "p(90)": 43.80000000000001,
+        "p(95)": 74.39999999999998
+      }
+    },
+    "poll_hit_latency": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 5.061,
+        "med": 9.575,
+        "max": 25.982,
+        "p(90)": 17.9324,
+        "p(95)": 21.957199999999997,
+        "avg": 11.4143
+      }
+    }
+  },
+  "setup_data": {
+    "testRunId": "tc00-2026-06-07T08-41-26-269Z",
+    "workflowDefinitionAction": "created",
+    "workflowName": "wf_perf_tc00_report_20260607_164044",
+    "workflowVersion": 1,
+    "taskDefinitionAction": "created",
+    "taskType": "perf_task_tc00_report_20260607_164044"
+  },
+  "root_group": {
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": [],
+    "checks": [
+        {
+          "id": "b246c32ac929631358a6980df7164a1d",
+          "passes": 10,
+          "fails": 0,
+          "name": "start workflow status is 200/202",
+          "path": "::start workflow status is 200/202"
+        },
+        {
+          "fails": 0,
+          "name": "start workflow has body",
+          "path": "::start workflow has body",
+          "id": "7cb4865902a05df2f615725e5b60fa47",
+          "passes": 10
+        },
+        {
+          "name": "complete task status is 200/204",
+          "path": "::complete task status is 200/204",
+          "id": "ff416610a822a23eea2e5bff610f8f13",
+          "passes": 10,
+          "fails": 0
+        }
+      ]
+  }
+}
